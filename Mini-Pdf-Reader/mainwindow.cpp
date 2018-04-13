@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_view->setItemDelegate(m_delegate);
     ui->comboBox->setCurrentIndex(2);
     ui->verticalLayout->addWidget(m_view);
+//    ui->widget->setVisible(false);
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::openPdf);
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::closePdf);
     connect(ui->actionPrint, &QAction::triggered, this, &MainWindow::printPdf);
@@ -51,13 +52,21 @@ void MainWindow::showPdf()
     QString name = m_fileName.mid(m_fileName.indexOf('/') + 1);
     setWindowTitle(tr("%1 - Mini PDF Reader").arg(name));
     float sca = scale();
+    DEBUG_VAR(sca);
     fz_matrix ctm;
     fz_scale(&ctm, sca, sca);
+    DEBUG_VAR(ctm.a);
+    DEBUG_VAR(ctm.b);
+    DEBUG_VAR(ctm.c);
+    DEBUG_VAR(ctm.d);
+    DEBUG_VAR(ctm.e);
+    DEBUG_VAR(ctm.f);
     m_model->LoadDocument(m_fileName);
     int pageCount = m_model->rowCount();
     ui->label->setText(QString("/%1").arg(pageCount));
     m_model->setCtm(ctm);
     m_model->Update();
+    ui->widget->setVisible(true);
     QTimer::singleShot(200,[=]{
         DEBUG_VAR(m_delegate->size());
         if(m_delegate->size() != QSize())
