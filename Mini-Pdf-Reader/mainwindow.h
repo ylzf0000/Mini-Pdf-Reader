@@ -17,6 +17,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    float scale() const;
+    void openPdf();
+    void showPdf();
+    void closePdf();
+    void printPdf();
+    void quickPrintPdf();
+
     PdfListView *view() const;
     void setView(PdfListView *view);
 
@@ -26,8 +33,12 @@ public:
     PdfListItemDelegate *delegate() const;
     void setDelegate(PdfListItemDelegate *delegate);
 
+    QString fileName() const;
+    void setFileName(const QString &fileName);
+
 private:
     Ui::MainWindow *ui;
+    QString m_fileName;
     PdfListView *m_view;
     PdfListModel *m_model;
     PdfListItemDelegate *m_delegate;
