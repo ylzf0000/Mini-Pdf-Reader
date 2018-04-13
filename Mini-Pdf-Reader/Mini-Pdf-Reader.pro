@@ -11,6 +11,9 @@ PRECOMPILED_HEADER  = stdafx.h
 
 QMAKE_CXXFLAGS += /MP
 
+TRANSLATIONS += client_en.ts
+TRANSLATIONS += client_cn.ts
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Mini-Pdf-Reader
@@ -74,3 +77,6 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/thirdparty/mupdf/lib/de
 
 win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/thirdparty/mupdf/lib/release/libthirdparty.lib
 else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/thirdparty/mupdf/lib/debug/libthirdparty.lib
+
+RESOURCES += \
+    res.qrc
