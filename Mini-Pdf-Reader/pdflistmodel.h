@@ -30,8 +30,8 @@ public:
 private:
     const int MAX_COUNT = 10;
     QString m_fileName;
-    mutable fz_matrix m_ctm;
     MuPdfUtil::Document m_doc;
+    mutable fz_matrix m_ctm;
     mutable std::unordered_map<int, fz_pixmap*> m_pixMap;
     mutable QSize m_size;
 };

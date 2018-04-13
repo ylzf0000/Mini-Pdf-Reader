@@ -11,15 +11,14 @@ public:
     explicit PdfListItemDelegate(QObject *parent = nullptr);
 
 signals:
-
+    void onPaint(int i) const;
 public slots:
 
-    // QAbstractItemDelegate interface
 public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     QSize size() const;
-    void setSize(const QSize &size);
+    void setSize(const QSize &size) const;
 
 private:
     mutable QSize m_size;

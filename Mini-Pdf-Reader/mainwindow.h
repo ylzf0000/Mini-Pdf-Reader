@@ -36,6 +36,9 @@ public:
     QString fileName() const;
     void setFileName(const QString &fileName);
 
+public slots:
+    void updateCurrentPageCount(int i);
+
 private:
     Ui::MainWindow *ui;
     QString m_fileName;
