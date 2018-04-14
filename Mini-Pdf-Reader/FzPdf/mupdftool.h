@@ -1,4 +1,4 @@
-#ifndef MUPDFTOOL_H
+﻿#ifndef MUPDFTOOL_H
 #define MUPDFTOOL_H
 #include "stdafx.h"
 #include <mupdf/pdf.h>
@@ -33,9 +33,9 @@ namespace MuPdfUtil
         ~Document();
         Document();
         Document(const QString &fileName);
-        void Open(const QString &fileName);
-        int GetPageCount() const;
-        fz_pixmap *LoadPixmap(int i, fz_matrix *mat) const;
+        void open(const QString &fileName);
+        int pageCount() const;
+        fz_pixmap *loadPixmap(int i, fz_matrix *mat) const;
 
         fz_context *ctx() const;
         void setCtx(fz_context *ctx);
@@ -46,7 +46,7 @@ namespace MuPdfUtil
     private:
         fz_context *m_ctx = nullptr;
         fz_document *m_doc = nullptr;
-        mutable int pageCount = -1;
+        mutable int m_pageCount = -1;
     };
 }
 #endif // MUPDFTOOL_H

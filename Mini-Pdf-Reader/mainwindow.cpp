@@ -1,7 +1,7 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "pdfprinttool.h"
-
+#include "pdflistview.h"
 #include <QFileDialog>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::closePdf);
     connect(ui->actionPrint, &QAction::triggered, this, &MainWindow::printPdf);
     connect(ui->actionQuickPrint, &QAction::triggered, this, &MainWindow::quickPrintPdf);
+    connect(ui->comboBox, &QComboBox::currentTextChanged, this, &MainWindow::onComboBoxTextChange);
     connect(m_delegate, &PdfListItemDelegate::onPaint, this, &MainWindow::updateCurrentPageCount);
 }
 
@@ -29,13 +30,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-float MainWindow::scale() const
+float MainWindow::scale(const QString txt) const
 {
     bool ok;
-    QString txt = ui->comboBox->currentText();
     float s = txt.left(txt.count() - 1).toFloat(&ok);
     s = ok ? s : 100;
     return s / 100;
+}
+
+float MainWindow::scale() const
+{
+    return scale(ui->comboBox->currentText());
 }
 
 void MainWindow::openPdf()
@@ -51,24 +56,20 @@ void MainWindow::showPdf()
 {
     QString name = m_fileName.mid(m_fileName.indexOf('/') + 1);
     setWindowTitle(tr("%1 - Mini PDF Reader").arg(name));
-    float sca = scale();
-    DEBUG_VAR(sca);
-    fz_matrix ctm;
-    fz_scale(&ctm, sca, sca);
-    DEBUG_VAR(ctm.a);
-    DEBUG_VAR(ctm.b);
-    DEBUG_VAR(ctm.c);
-    DEBUG_VAR(ctm.d);
-    DEBUG_VAR(ctm.e);
-    DEBUG_VAR(ctm.f);
-    m_model->LoadDocument(m_fileName);
+    m_model->loadDocument(m_fileName);
     int pageCount = m_model->rowCount();
     ui->label->setText(QString("/%1").arg(pageCount));
-    m_model->setCtm(ctm);
-    m_model->Update();
+    _showPdf();
+}
+
+void MainWindow::_showPdf()
+{
+    float sca = scale();
+    fz_matrix ctm;
+    fz_scale(&ctm, sca, sca);
+    m_model->resetCtm(ctm);
     ui->widget->setVisible(true);
     QTimer::singleShot(200,[=]{
-        DEBUG_VAR(m_delegate->size());
         if(m_delegate->size() != QSize())
         {
             int h = std::min(768, m_delegate->size().height());
@@ -81,6 +82,11 @@ void MainWindow::showPdf()
 void MainWindow::closePdf()
 {
 
+}
+
+void MainWindow::onComboBoxTextChange(const QString &txt)
+{
+    _showPdf();
 }
 
 void MainWindow::printPdf()

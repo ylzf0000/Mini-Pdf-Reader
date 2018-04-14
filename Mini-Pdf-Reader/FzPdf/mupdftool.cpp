@@ -1,4 +1,4 @@
-#include "mupdftool.h"
+﻿#include "mupdftool.h"
 #include "fz_header.h"
 using namespace std;
 
@@ -22,10 +22,10 @@ MuPdfUtil::Document::Document()
 
 MuPdfUtil::Document::Document(const QString &fileName) : Document()
 {
-    Open(fileName);
+    open(fileName);
 }
 
-void MuPdfUtil::Document::Open(const QString &fileName)
+void MuPdfUtil::Document::open(const QString &fileName)
 {
     string name = fileName.toStdString();
     fz_try(m_ctx)
@@ -35,19 +35,19 @@ void MuPdfUtil::Document::Open(const QString &fileName)
     FZ_CATCH_DROPDOC(m_ctx, m_doc);
 }
 
-int MuPdfUtil::Document::GetPageCount() const
+int MuPdfUtil::Document::pageCount() const
 {
-    if(pageCount >= 0)
-        return pageCount;
+    if(m_pageCount >= 0)
+        return m_pageCount;
     fz_try(m_ctx)
     {
-        pageCount = fz_count_pages(m_ctx, m_doc);
+        m_pageCount = fz_count_pages(m_ctx, m_doc);
     }
     FZ_CATCH_DROPDOC_NORETURN(m_ctx, m_doc);
-    return pageCount;
+    return m_pageCount;
 }
 
-fz_pixmap *MuPdfUtil::Document::LoadPixmap(int i, fz_matrix *mat) const
+fz_pixmap *MuPdfUtil::Document::loadPixmap(int i, fz_matrix *mat) const
 {
     fz_pixmap *pixmap;
     fz_try(m_ctx)

@@ -1,9 +1,7 @@
-#include "pdflistitemdelegate.h"
-
+﻿#include "pdflistitemdelegate.h"
 #include <QPainter>
-
 #include <QMainWindow>
-#include <pdflistview.h>
+#include "pdflistview.h"
 
 PdfListItemDelegate::PdfListItemDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
@@ -21,13 +19,6 @@ void PdfListItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
         int s = img.width();
         int x = (w - s) / 2;
         painter->drawImage(x, option.rect.y(), img);
-
-//        if(QMainWindow *window = dynamic_cast<QMainWindow*>(parent()))
-//        {
-//            int h = std::min(768, img.height());
-//            window->resize(img.width() + 100, h);
-//            SetWidgetCentral(window);
-//        }
     }
 }
 

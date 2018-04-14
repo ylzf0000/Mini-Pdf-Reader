@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -17,10 +17,15 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    float scale(const QString txt) const;
     float scale() const;
     void openPdf();
     void showPdf();
+private:
+    void _showPdf();
+public:
     void closePdf();
+    void onComboBoxTextChange(const QString &txt);
     void printPdf();
     void quickPrintPdf();
 

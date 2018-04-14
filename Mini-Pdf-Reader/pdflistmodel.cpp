@@ -1,16 +1,17 @@
-#include "pdflistmodel.h"
-
+﻿#include "pdflistmodel.h"
+using namespace std;
 PdfListModel::~PdfListModel()
 {
-    for(auto &p : m_pixMap)
-    {
-        fz_drop_pixmap(m_doc.ctx(), p.second);
-        p.second = nullptr;
-    }
+
 }
 
 PdfListModel::PdfListModel(QObject *parent)
-    : QAbstractListModel(parent)
+    : QAbstractListModel(parent),
+      m_samplesList(make_shared<deque<item_s>>()),
+      m_imgList(make_shared<deque<img_s>>()),
+      m_indexList(make_shared<deque<QModelIndex>>()),
+      m_ctm(make_shared<fz_matrix>()),
+      m_size(make_shared<QSize>())
 {
 
 }
@@ -18,26 +19,65 @@ PdfListModel::PdfListModel(QObject *parent)
 PdfListModel::PdfListModel(const QString &fileName, QObject *parent):PdfListModel()
 {
     m_fileName = fileName;
-    m_doc.Open(m_fileName);
+    m_doc.open(m_fileName);
 }
 
-void PdfListModel::LoadDocument(const QString &fileName)
+void PdfListModel::loadDocument(const QString &fileName)
 {
     if(m_fileName == fileName)
         return;
     m_fileName = fileName;
-    m_doc.Open(fileName);
+    m_doc.open(fileName);
 }
 
-fz_pixmap *PdfListModel::LoadPixmap(int i) const
+fz_pixmap *PdfListModel::loadPixmap(int i) const
 {
-    return m_doc.LoadPixmap(i, &m_ctm);
+    return m_doc.loadPixmap(i, m_ctm.get());
 }
 
-void PdfListModel::Update()
+void PdfListModel::resetCtm(const fz_matrix &mat)
 {
     beginResetModel();
+    *m_ctm = mat;
+    m_samplesList->clear();
+    m_imgList->clear();
     endResetModel();
+}
+
+void PdfListModel::resetPageCount()
+{
+    beginResetModel();
+    m_showPage += m_incrementPage;
+    endResetModel();
+}
+
+unsigned char *PdfListModel::samples32FromFzPixmap(fz_pixmap *pix) const
+{
+//    int w = pix->w;
+    int h = fz_pixmap_height(m_doc.ctx(), pix);
+//    int n = pix->n;
+    int stride = pix->stride;
+//    int stride2 = static_cast<int>(std::ceil(stride / 4.0)) * 4;
+    int stride2 = (stride * 8 + 31) / 32 * 4;
+    unsigned char * samples32 = new unsigned char[stride2 * h]{0};
+    int des_offset = 0;
+    int src_offset = 0;
+    for(int i = 0; i < h; ++i)
+    {
+        std::memcpy(samples32 + des_offset, pix->samples + src_offset, stride);
+        src_offset += stride;
+        des_offset += stride2;
+    }
+    return samples32;
+}
+
+QSize PdfListModel::size32FromFzPixmap(fz_pixmap *pix) const
+{
+    int w = fz_pixmap_width(m_doc.ctx(), pix);
+    int h = fz_pixmap_height(m_doc.ctx(), pix);
+//    int w2 = static_cast<int>(std::ceil(w / 4.0)) * 4;
+    int w2 = w;
+    return { w2, h };
 }
 
 int PdfListModel::rowCount(const QModelIndex &parent) const
@@ -46,7 +86,8 @@ int PdfListModel::rowCount(const QModelIndex &parent) const
         return 0;
     if(m_fileName.isEmpty())
         return 0;
-    return m_doc.GetPageCount();
+    int cnt = m_doc.pageCount();
+    return cnt > m_showPage ? m_showPage : cnt;
 }
 
 QVariant PdfListModel::data(const QModelIndex &index, int role) const
@@ -57,27 +98,52 @@ QVariant PdfListModel::data(const QModelIndex &index, int role) const
         return QVariant();
     if(role == Qt::DisplayRole)
     {
+//        DEBUG_VAR(index.row());
         int i = index.row();
-        if(m_pixMap.size() > MAX_COUNT)
+        std::deque<item_s> &sampList = *m_samplesList;
+
+        unsigned char *samples32 = nullptr;
+        auto it = std::find_if(sampList.cbegin(), sampList.cend(), [=](const item_s &item){
+            return item.i == i;
+        });
+
+        if(it != sampList.cend() && it->samples)
         {
-            static QImage img(m_size, QImage::Format_RGB888);
-            img.fill(Qt::white);
-            return img;
-        }
-        fz_pixmap *pix = nullptr;
-        if(m_pixMap.find(i) != m_pixMap.end() || m_pixMap[i])
-        {
-            pix = m_pixMap[i];
+            samples32 = it->samples;
         }
         else
         {
-            pix = LoadPixmap(i);
-            m_pixMap[i] = pix;
+            fz_pixmap *pix = loadPixmap(i);
+            samples32 = samples32FromFzPixmap(pix);
+            sampList.push_back({i, samples32});
+            *m_size = size32FromFzPixmap(pix);
+            if(pix)
+                fz_drop_pixmap(m_doc.ctx(), pix);
         }
-        int w = fz_pixmap_width(m_doc.ctx(), pix);
-        int h = fz_pixmap_height(m_doc.ctx(), pix);
-        m_size = {w, h};
-        QImage img = QImage(pix->samples, w, h, QImage::Format_RGB888);
+
+        deque<QModelIndex> &indexList = *m_indexList;
+        auto it_index = std::find_if(indexList.cbegin(), indexList.cend(), [=](const QModelIndex &obj){
+            return obj == index;
+        });
+        if(it_index == indexList.cend())
+        {
+            indexList.push_back(index);
+        }
+        if(indexList.size() > MAX_COUNT)
+        {
+            if(m_defaultImg.isNull())
+            {
+                m_defaultImg = QImage(*m_size, QImage::Format_RGB888);
+                m_defaultImg.fill(Qt::white);
+            }
+//            setData(indexList.front(), m_defaultImg, Qt::DisplayRole);
+            indexList.pop_front();
+        }
+        QImage img = QImage(samples32, m_size->width(), m_size->height(), QImage::Format_RGB888, [](void *data){
+            if(unsigned char *samples32 = static_cast<unsigned char*>(data))
+                delete[] samples32;
+        });
+        DEBUG_VAR(img.scanLine(1) - img.scanLine(0));
         return img;
     }
     return QVariant();
@@ -88,16 +154,6 @@ QString PdfListModel::fileName() const
     return m_fileName;
 }
 
-fz_matrix PdfListModel::ctm() const
-{
-    return m_ctm;
-}
-
-void PdfListModel::setCtm(const fz_matrix &ctm)
-{
-    m_ctm = ctm;
-}
-
 MuPdfUtil::Document PdfListModel::doc() const
 {
     return m_doc;
@@ -106,6 +162,16 @@ MuPdfUtil::Document PdfListModel::doc() const
 void PdfListModel::setDoc(const MuPdfUtil::Document &doc)
 {
     m_doc = doc;
+}
+
+std::shared_ptr<fz_matrix> PdfListModel::ctm() const
+{
+    return m_ctm;
+}
+
+void PdfListModel::setCtm(const std::shared_ptr<fz_matrix> &ctm)
+{
+    m_ctm = ctm;
 }
 
 

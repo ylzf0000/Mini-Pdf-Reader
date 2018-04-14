@@ -1,9 +1,7 @@
-#ifndef PDFLISTVIEW_H
+﻿#ifndef PDFLISTVIEW_H
 #define PDFLISTVIEW_H
 #include "stdafx.h"
 #include <QListView>
-#include "pdflistmodel.h"
-#include "pdflistitemdelegate.h"
 class PdfListView : public QListView
 {
     Q_OBJECT
@@ -16,6 +14,10 @@ public slots:
 
 private:
 
+
+    // QAbstractItemView interface
+protected slots:
+    virtual void verticalScrollbarValueChanged(int value) override;
 };
 
 #endif // PDFLISTVIEW_H
