@@ -1,0 +1,1 @@
+pdfprintcom.exe /regserver

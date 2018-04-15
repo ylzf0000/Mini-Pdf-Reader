@@ -93,7 +93,6 @@ void MainWindow::printPdf()
 {
     if(fileName().isEmpty())
         return;
-    DEBUG_FUNC;
     DEBUG_VAR(fileName());
     QString cmd = QString("pdfprint.exe -prompt \"%1\"").arg(fileName());
     DEBUG_VAR(PdfPrintTool::Instance().PrintW(cmd));
@@ -101,7 +100,11 @@ void MainWindow::printPdf()
 
 void MainWindow::quickPrintPdf()
 {
-
+    if(fileName().isEmpty())
+        return;
+    DEBUG_VAR(fileName());
+    QString cmd = QString("pdfprint.exe -quiet \"%1\"").arg(fileName());
+    DEBUG_VAR(PdfPrintTool::Instance().PrintW(cmd));
 }
 
 PdfListView *MainWindow::view() const

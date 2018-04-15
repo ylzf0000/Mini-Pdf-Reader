@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="WindowsApplication1">
+</Property><Property Name="Solution File" Value="E:\PDFPrint\product_release\pdfprint_sdk\C#\WindowsApplication1\WindowsApplication1.sln">
+</Property><Property Name="Date" Value="2010年8月21日">
+</Property><Property Name="Time" Value="11:40">
+</Property></Properties><Event ErrorLevel="1" Project="WindowsApplication1" Source="WindowsApplication1.csproj" Description="Your project is targeting .NET Framework 2.0 or 3.0. If your project uses assemblies requiring a newer .NET Framework, your project will fail to build. You can change the .NET Framework version by clicking Properties on the project menu and then selecting a new version in the '.NET Framework' dropdown box. (In Visual Basic, this is located on the Compile tab by clicking the 'Advanced Compiler Options...' button.)">
+</Event><Event ErrorLevel="0" Project="WindowsApplication1" Source="WindowsApplication1.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="WindowsApplication1" Source="WindowsApplication1.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="WindowsApplication1.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="WindowsApplication1.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="WindowsApplication1" Source="WindowsApplication1.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

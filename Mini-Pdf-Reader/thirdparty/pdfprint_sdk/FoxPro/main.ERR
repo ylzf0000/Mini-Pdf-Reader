@@ -1,0 +1,4 @@
+Some of that code originated from Christof Wollenhaupt with a number of modifications made to support wait operations and easier access to the command line parameters.
+Fehler in Zeile 179: Unbekannter Befehl.
+To support piping etc. wwIPStuff.dll (part of West Wind Internet Protocols or West Wind Client Tools) includes a wrapper that does something like this:
+Fehler in Zeile 181: Unbekannter Befehl.

@@ -1,0 +1,11 @@
+E:\PDFPrint\product_release\pdfprint_sdk\C#_COM\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+E:\PDFPrint\product_release\pdfprint_sdk\C#_COM\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+E:\PDFPrint\product_release\pdfprint_sdk\C#_COM\WindowsFormsApplication1\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\PDFPrint\product_release\pdfprint_sdk\C#_COM\WindowsFormsApplication1\obj\x86\Debug\Interop.pdfprintcom.dll
+E:\PDFPrint\product_release\pdfprint_sdk\C#_COM\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.csproj.ResolveComReference.cache
+E:\PDFPrint\product_release\pdfprint_sdk\C#_COM\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.Form1.resources
+E:\PDFPrint\product_release\pdfprint_sdk\C#_COM\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.Properties.Resources.resources
+E:\PDFPrint\product_release\pdfprint_sdk\C#_COM\WindowsFormsApplication1\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\PDFPrint\product_release\pdfprint_sdk\C#_COM\WindowsFormsApplication1\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\PDFPrint\product_release\pdfprint_sdk\C#_COM\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.exe
+E:\PDFPrint\product_release\pdfprint_sdk\C#_COM\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.pdb

@@ -1,0 +1,96 @@
+Declare DLL in the MAIN.PRG:
+
+Declare INTEGER VeryPDF_PDFPrint in pdfprintsdk.dll String strCommandLine
+
+
+Print Function in the Test-Form:
+*!*	.print_file()
+PARAMETERS Print_all, nummer, missing_file
+
+DO CASE
+	CASE Print_all= .T.
+		*!*	Print_all
+		m.File_String = ""
+		IF !EMPTY(thisform.txt_file_01.Value)
+			m.File_String = IIF(EMPTY(m.File_String),'"' + thisform.txt_file_01.Value + '"',;
+						 m.File_String+' "' + ALLTRIM(thisform.txt_file_01.Value) + '"')
+		ENDIF
+		IF !EMPTY(thisform.txt_file_02.Value)
+			m.File_String = IIF(EMPTY(m.File_String),'"' + thisform.txt_file_02.Value + '"',;
+						 m.File_String+' "' + ALLTRIM(thisform.txt_file_02.Value) + '"')
+		ENDIF
+		IF !EMPTY(thisform.txt_file_03.Value)
+			m.File_String = IIF(EMPTY(m.File_String),'"' + thisform.txt_file_03.Value + '"',;
+						 m.File_String+' "' + ALLTRIM(thisform.txt_file_03.Value) + '"')
+		ENDIF
+		IF !EMPTY(thisform.txt_file_04.Value)
+			m.File_String = IIF(EMPTY(m.File_String),'"' + thisform.txt_file_04.Value + '"',;
+						 m.File_String+' "' + ALLTRIM(thisform.txt_file_04.Value) + '"')
+		ENDIF
+		IF !EMPTY(thisform.txt_file_05.Value)
+			m.File_String = IIF(EMPTY(m.File_String),'"' + thisform.txt_file_05.Value + '"',;
+						 m.File_String+' "' + ALLTRIM(thisform.txt_file_05.Value) + '"')
+		ENDIF
+		IF !EMPTY(thisform.txt_file_06.Value)
+			m.File_String = IIF(EMPTY(m.File_String),'"' + thisform.txt_file_06.Value + '"',;
+						 m.File_String+' "' + ALLTRIM(thisform.txt_file_06.Value) + '"')
+		ENDIF
+		IF !EMPTY(thisform.txt_file_07.Value)
+			m.File_String = IIF(EMPTY(m.File_String),'"' + thisform.txt_file_07.Value + '"',;
+						 m.File_String+' "' + ALLTRIM(thisform.txt_file_07.Value) + '"')
+		ENDIF 
+		IF !EMPTY(thisform.txt_file_08.Value)
+			m.File_String = IIF(EMPTY(m.File_String),'"' + thisform.txt_file_08.Value + '"',;
+						 m.File_String+' "' + ALLTRIM(thisform.txt_file_08.Value) + '"')
+		ENDIF
+		IF !EMPTY(thisform.txt_file_09.Value)
+			m.File_String = IIF(EMPTY(m.File_String),'"' + thisform.txt_file_09.Value + '"',;
+						 m.File_String+' "' + ALLTRIM(thisform.txt_file_09.Value) + '"')
+		ENDIF
+		IF !EMPTY(thisform.txt_file_10.Value)
+			m.File_String = IIF(EMPTY(m.File_String),'"' + thisform.txt_file_10.Value + '"',;
+						 m.File_String+' "' + ALLTRIM(thisform.txt_file_10.Value) + '"')
+		ENDIF
+
+	CASE missing_file = .T.
+		*!*	Random filename
+		m.File_String = "c:\pdf"+SYS(2015)+".pdf"
+
+	*!*	got the number ....	
+	CASE nummer = 1
+		m.File_String = '"' + ALLTRIM(thisform.txt_file_01.Value) + '"'
+	CASE nummer = 2
+		m.File_String = '"' + ALLTRIM(thisform.txt_file_02.Value) + '"'
+	CASE nummer = 3
+		m.File_String = '"' + ALLTRIM(thisform.txt_file_03.Value) + '"'
+	CASE nummer = 4
+		m.File_String = '"' + ALLTRIM(thisform.txt_file_04.Value) + '"'
+	CASE nummer = 5
+		m.File_String = '"' + ALLTRIM(thisform.txt_file_05.Value) + '"'
+	CASE nummer = 6
+		m.File_String = '"' + ALLTRIM(thisform.txt_file_06.Value) + '"'
+	CASE nummer = 7
+		m.File_String = '"' + ALLTRIM(thisform.txt_file_07.Value) + '"'
+	CASE nummer = 8
+		m.File_String = '"' + ALLTRIM(thisform.txt_file_08.Value) + '"'
+	CASE nummer = 9
+		m.File_String = '"' + ALLTRIM(thisform.txt_file_09.Value) + '"'
+	CASE nummer = 10
+		m.File_String = '"' + ALLTRIM(thisform.txt_file_10.Value) + '"'
+
+	OTHERWISE
+		RETURN .F.
+ENDCASE
+
+IF EMPTY(m.File_String) .or. m.File_String = '""'
+	MESSAGEBOX("We need one file or more ...!",48,_screen.Caption)
+	RETURN .F.
+ENDIF
+
+
+strCmd = 'pdfprint -prompt ' + m.File_String
+nRet = VeryPDF_PDFPrint(strCmd)
+
+_cliptext = strCmd
+
+MESSAGEBOX("Return Code: "+ALLTRIM(STR(nRet)),48,_screen.Caption)

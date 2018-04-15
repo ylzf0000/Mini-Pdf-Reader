@@ -51,6 +51,13 @@ void PdfListModel::resetPageCount()
     endResetModel();
 }
 
+void PdfListModel::resetBeginPage(int page)
+{
+    beginResetModel();
+    m_beginPage = page;
+    endResetModel();
+}
+
 unsigned char *PdfListModel::samples32FromFzPixmap(fz_pixmap *pix) const
 {
 //    int w = pix->w;
@@ -99,7 +106,7 @@ QVariant PdfListModel::data(const QModelIndex &index, int role) const
     if(role == Qt::DisplayRole)
     {
 //        DEBUG_VAR(index.row());
-        int i = index.row();
+        int i = index.row() + m_beginPage;
         std::deque<item_s> &sampList = *m_samplesList;
 
         unsigned char *samples32 = nullptr;
@@ -143,7 +150,7 @@ QVariant PdfListModel::data(const QModelIndex &index, int role) const
             if(unsigned char *samples32 = static_cast<unsigned char*>(data))
                 delete[] samples32;
         });
-        DEBUG_VAR(img.scanLine(1) - img.scanLine(0));
+//        DEBUG_VAR(img.scanLine(1) - img.scanLine(0));
         return img;
     }
     return QVariant();
@@ -172,6 +179,16 @@ std::shared_ptr<fz_matrix> PdfListModel::ctm() const
 void PdfListModel::setCtm(const std::shared_ptr<fz_matrix> &ctm)
 {
     m_ctm = ctm;
+}
+
+int PdfListModel::beginPage() const
+{
+    return m_beginPage;
+}
+
+void PdfListModel::setBeginPage(int beginPage)
+{
+    m_beginPage = beginPage;
 }
 
 

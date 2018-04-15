@@ -1,0 +1,37 @@
+unit pdfprintD6;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ShellApi;
+
+Function VeryPDF_PDFPrint(lpCommand: PChar) : longint; stdcall; external 'pdfprintsdk.dll' name 'VeryPDF_PDFPrint';
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Open: TOpenDialog;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  TxtFile : String;
+  szTempPath: PChar;
+begin
+	VeryPDF_PDFPrint("pdfprint C:\test.pdf")
+end;
+
+end.

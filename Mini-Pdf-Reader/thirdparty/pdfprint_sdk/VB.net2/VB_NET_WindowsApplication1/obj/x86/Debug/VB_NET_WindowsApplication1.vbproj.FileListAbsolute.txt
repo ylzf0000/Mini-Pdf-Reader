@@ -1,0 +1,11 @@
+E:\PDFPrint\product_release\pdfprint_sdk\bin\VB_NET_WindowsApplication1.exe
+E:\PDFPrint\product_release\pdfprint_sdk\bin\VB_NET_WindowsApplication1.pdb
+E:\PDFPrint\product_release\pdfprint_sdk\bin\VB_NET_WindowsApplication1.xml
+E:\PDFPrint\product_release\pdfprint_sdk\vb.net2\VB_NET_WindowsApplication1\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\PDFPrint\product_release\pdfprint_sdk\vb.net2\VB_NET_WindowsApplication1\obj\x86\Debug\VB_NET_WindowsApplication1.Form1.resources
+E:\PDFPrint\product_release\pdfprint_sdk\vb.net2\VB_NET_WindowsApplication1\obj\x86\Debug\VB_NET_WindowsApplication1.Resources.resources
+E:\PDFPrint\product_release\pdfprint_sdk\vb.net2\VB_NET_WindowsApplication1\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\PDFPrint\product_release\pdfprint_sdk\vb.net2\VB_NET_WindowsApplication1\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\PDFPrint\product_release\pdfprint_sdk\vb.net2\VB_NET_WindowsApplication1\obj\x86\Debug\VB_NET_WindowsApplication1.exe
+E:\PDFPrint\product_release\pdfprint_sdk\vb.net2\VB_NET_WindowsApplication1\obj\x86\Debug\VB_NET_WindowsApplication1.xml
+E:\PDFPrint\product_release\pdfprint_sdk\vb.net2\VB_NET_WindowsApplication1\obj\x86\Debug\VB_NET_WindowsApplication1.pdb

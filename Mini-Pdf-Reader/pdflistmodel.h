@@ -18,6 +18,7 @@ public:
     fz_pixmap *loadPixmap(int i) const;
     void resetCtm(const fz_matrix &mat);
     void resetPageCount();
+    void resetBeginPage(int page);
 private:
     unsigned char *samples32FromFzPixmap(fz_pixmap *pix) const;
     QSize size32FromFzPixmap(fz_pixmap *pix) const;
@@ -32,6 +33,9 @@ public:
 
     std::shared_ptr<fz_matrix> ctm() const;
     void setCtm(const std::shared_ptr<fz_matrix> &ctm);
+
+    int beginPage() const;
+    void setBeginPage(int beginPage);
 
 private:
     size_t MAX_COUNT = 10;

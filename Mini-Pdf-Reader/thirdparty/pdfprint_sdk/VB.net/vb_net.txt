@@ -1,0 +1,12 @@
+Public Class BatchPrintPDF
+
+    Private Declare Function VeryPDF_PDFPrint Lib "pdfprintsdk.dll" (ByVal strCommandLine As String) As integer
+
+    Public Function BatchPrintPDF() As Long
+    	strCmd = "pdfprint" & " -$" & " XXXXXXXXXXXXXXXXXXXX"
+    	strCmd = strCmd & " -printer docPrint"
+    	strCmd = strCmd & " C:\readme.pdf"
+        BatchPrintPDF = VeryPDF_PDFPrint(strCmd)
+    End Function
+
+End Class

@@ -1,0 +1,2 @@
+pdfprintcom.exe /unregserver
+
