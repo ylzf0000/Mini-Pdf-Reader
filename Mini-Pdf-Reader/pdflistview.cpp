@@ -19,11 +19,20 @@ void PdfListView::verticalScrollbarValueChanged(int value)
     {
         if(PdfListModel *m = dynamic_cast<PdfListModel*>(this->model()))
         {
+            DEBUG_VAR(m->beginPage());
+            int next = m->nextBeginPage();
+            if(next > m->beginPage())
+                m->resetBeginPage(next);
+//            QModelIndex idx = this->currentIndex();
+
+            this->setCurrentIndex(m->index(m->midRow()));
 //            m->resetPageCount();
 //            QModelIndex index = indexAt({rect().x() / 2, rect().y() / 2});
-            m->resetBeginPage(m->beginPage() + 5);
-            verticalScrollBar()->setValue(verticalScrollBar()->maximum()/10*4.5);
+//            m->resetBeginPage(m->beginPage() + 5);
+//            verticalScrollBar()->setValue(verticalScrollBar()->maximum()/10*4.5);
 //            QTimer::singleShot(200, [=]{ verticalScrollBar()->scroll(0,verticalScrollBar()->maximum()/2); });
         }
     }
+
+//    this->setCurrentIndex();
 }

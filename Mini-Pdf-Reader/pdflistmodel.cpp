@@ -58,6 +58,25 @@ void PdfListModel::resetBeginPage(int page)
     endResetModel();
 }
 
+int PdfListModel::pageCount() const
+{
+    return m_doc.pageCount();
+}
+
+int PdfListModel::nextBeginPage() const
+{
+    int next = m_beginPage + MAX_COUNT / 2;
+    DEBUG_VAR(next);
+    return  next >= pageCount() ? m_beginPage : next;
+}
+
+int PdfListModel::midRow() const
+{
+    if(nextBeginPage() > beginPage())
+        return MAX_COUNT / 2;
+    return beginPage();
+}
+
 unsigned char *PdfListModel::samples32FromFzPixmap(fz_pixmap *pix) const
 {
 //    int w = pix->w;

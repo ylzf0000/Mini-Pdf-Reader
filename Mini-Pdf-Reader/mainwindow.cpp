@@ -57,7 +57,7 @@ void MainWindow::showPdf()
     QString name = m_fileName.mid(m_fileName.indexOf('/') + 1);
     setWindowTitle(tr("%1 - Mini PDF Reader").arg(name));
     m_model->loadDocument(m_fileName);
-    int pageCount = m_model->rowCount();
+    int pageCount = m_model->pageCount();
     ui->label->setText(QString("/%1").arg(pageCount));
     _showPdf();
 }
@@ -149,5 +149,5 @@ void MainWindow::setFileName(const QString &fileName)
 
 void MainWindow::updateCurrentPageCount(int i)
 {
-    ui->lineEdit->setText(QString("%1").arg(i + 1));
+    ui->lineEdit->setText(QString("%1").arg(m_model->beginPage() + i + 1));
 }

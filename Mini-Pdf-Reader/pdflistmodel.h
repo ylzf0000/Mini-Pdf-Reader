@@ -19,6 +19,9 @@ public:
     void resetCtm(const fz_matrix &mat);
     void resetPageCount();
     void resetBeginPage(int page);
+    int pageCount() const;
+    int nextBeginPage() const;
+    int midRow() const;
 private:
     unsigned char *samples32FromFzPixmap(fz_pixmap *pix) const;
     QSize size32FromFzPixmap(fz_pixmap *pix) const;
