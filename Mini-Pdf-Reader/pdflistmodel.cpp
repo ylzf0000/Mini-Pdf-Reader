@@ -44,12 +44,12 @@ void PdfListModel::resetCtm(const fz_matrix &mat)
     endResetModel();
 }
 
-void PdfListModel::resetPageCount()
-{
-    beginResetModel();
-    m_showPage += m_incrementPage;
-    endResetModel();
-}
+//void PdfListModel::resetPageCount()
+//{
+//    beginResetModel();
+//    m_showPage += m_incrementPage;
+//    endResetModel();
+//}
 
 void PdfListModel::resetBeginPage(int page)
 {
@@ -60,12 +60,13 @@ void PdfListModel::resetBeginPage(int page)
 
 int PdfListModel::pageCount() const
 {
-    return m_doc.pageCount();
+    static int page_count = m_doc.pageCount();
+    return page_count;
 }
 
 int PdfListModel::nextBeginPage() const
 {
-    int next = m_beginPage + MAX_COUNT / 2;
+    int next = m_beginPage + MAX_ROW_COUNT / 2;
     DEBUG_VAR(next);
     return  next >= pageCount() ? m_beginPage : next;
 }
@@ -73,7 +74,7 @@ int PdfListModel::nextBeginPage() const
 int PdfListModel::midRow() const
 {
     if(nextBeginPage() > beginPage())
-        return MAX_COUNT / 2;
+        return MAX_ROW_COUNT / 2;
     return beginPage();
 }
 
@@ -112,8 +113,10 @@ int PdfListModel::rowCount(const QModelIndex &parent) const
         return 0;
     if(m_fileName.isEmpty())
         return 0;
-    int cnt = m_doc.pageCount();
-    return cnt > m_showPage ? m_showPage : cnt;
+    if(pageCount() <= MAX_ROW_COUNT)
+        return pageCount();
+    int diff = pageCount() - beginPage() + 1;
+    return diff > pageCount() ? MAX_ROW_COUNT : diff;
 }
 
 QVariant PdfListModel::data(const QModelIndex &index, int role) const
@@ -155,7 +158,7 @@ QVariant PdfListModel::data(const QModelIndex &index, int role) const
         {
             indexList.push_back(index);
         }
-        if(indexList.size() > MAX_COUNT)
+        if(indexList.size() > MAX_ROW_COUNT)
         {
             if(m_defaultImg.isNull())
             {

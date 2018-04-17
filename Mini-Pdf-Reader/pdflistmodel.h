@@ -17,7 +17,7 @@ public:
     void loadDocument(const QString &fileName);
     fz_pixmap *loadPixmap(int i) const;
     void resetCtm(const fz_matrix &mat);
-    void resetPageCount();
+//    void resetPageCount();
     void resetBeginPage(int page);
     int pageCount() const;
     int nextBeginPage() const;
@@ -41,8 +41,8 @@ public:
     void setBeginPage(int beginPage);
 
 private:
-    size_t MAX_COUNT = 10;
-    mutable size_t m_showPage = 10;
+    size_t MAX_ROW_COUNT = 10;
+//    mutable size_t m_showPage = 10;
     size_t m_incrementPage = 10;
     QString m_fileName;
     MuPdfUtil::Document m_doc;
