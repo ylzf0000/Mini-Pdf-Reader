@@ -67,7 +67,6 @@ int PdfListModel::pageCount() const
 int PdfListModel::nextBeginPage() const
 {
     int next = m_beginPage + MAX_ROW_COUNT / 2;
-    DEBUG_VAR(next);
     return  next >= pageCount() ? m_beginPage : next;
 }
 
@@ -115,8 +114,9 @@ int PdfListModel::rowCount(const QModelIndex &parent) const
         return 0;
     if(pageCount() <= MAX_ROW_COUNT)
         return pageCount();
-    int diff = pageCount() - beginPage() + 1;
-    return diff > pageCount() ? MAX_ROW_COUNT : diff;
+    int diff = pageCount() - beginPage();
+    int row = diff > MAX_ROW_COUNT ? MAX_ROW_COUNT : diff;
+    return row;
 }
 
 QVariant PdfListModel::data(const QModelIndex &index, int role) const
