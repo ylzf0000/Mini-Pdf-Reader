@@ -25,12 +25,24 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_delegate, &PdfListItemDelegate::onPaint, this, &MainWindow::updateCurrentPageCount);
 }
 
+MainWindow::MainWindow(const QString &fileName, QWidget *parent) : MainWindow(parent)
+{
+    m_fileName = fileName;
+//    showPdf();
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-float MainWindow::scale(const QString txt) const
+bool MainWindow::isFileExist() const
+{
+    QFile file(m_fileName);
+    return file.exists();
+}
+
+float MainWindow::scale(const QString &txt) const
 {
     bool ok;
     float s = txt.left(txt.count() - 1).toFloat(&ok);
@@ -54,6 +66,12 @@ void MainWindow::openPdf()
 
 void MainWindow::showPdf()
 {
+    if(!isFileExist())
+    {
+        QString e = QString("%1 not exists.").arg(m_fileName);
+        QMessageBox::critical(nullptr, __func__, e);
+        return;
+    }
     QString name = m_fileName.mid(m_fileName.indexOf('/') + 1);
     setWindowTitle(tr("%1 - Mini PDF Reader").arg(name));
     m_model->loadDocument(m_fileName);
@@ -150,4 +168,9 @@ void MainWindow::setFileName(const QString &fileName)
 void MainWindow::updateCurrentPageCount(int i)
 {
     ui->lineEdit->setText(QString("%1").arg(m_model->beginPage() + i + 1));
+}
+
+void MainWindow::on_actionExit_triggered(bool checked)
+{
+    close();
 }

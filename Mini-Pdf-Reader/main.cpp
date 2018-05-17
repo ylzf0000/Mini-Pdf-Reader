@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -16,7 +16,18 @@ int main(int argc, char *argv[])
     };
     loadGlobalTrans();
     loadMineTrans();
-    MainWindow w;
-    w.show();
+    MainWindow *w;
+    if(argc >= 2)
+    {
+        QString fileName(argv[1]);
+        qDebug() << fileName;
+        w = new MainWindow(fileName);
+        w->showPdf();
+    }
+    else
+    {
+        w = new MainWindow;
+    }
+    w->show();
     return a.exec();
 }

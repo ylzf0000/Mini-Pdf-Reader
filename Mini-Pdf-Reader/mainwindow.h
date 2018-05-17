@@ -14,10 +14,11 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    MainWindow(QWidget *parent = 0);
+    MainWindow(const QString &fileName, QWidget *parent = nullptr);
     ~MainWindow();
-
-    float scale(const QString txt) const;
+    bool isFileExist() const;
+    float scale(const QString &txt) const;
     float scale() const;
     void openPdf();
     void showPdf();
@@ -43,6 +44,9 @@ public:
 
 public slots:
     void updateCurrentPageCount(int i);
+
+private slots:
+    void on_actionExit_triggered(bool checked);
 
 private:
     Ui::MainWindow *ui;
