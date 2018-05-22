@@ -84,7 +84,8 @@ unsigned char *PdfListModel::samples32FromFzPixmap(fz_pixmap *pix) const
 //    int n = pix->n;
     int stride = pix->stride;
 //    int stride2 = static_cast<int>(std::ceil(stride / 4.0)) * 4;
-    int stride2 = (stride * 8 + 31) / 32 * 4;
+//    int stride2 = (stride * 8 + 31) / 32 * 4;
+    int stride2 = (stride + 3) / 4 * 4;
     unsigned char * samples32 = new unsigned char[stride2 * h]{0};
     int des_offset = 0;
     int src_offset = 0;

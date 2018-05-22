@@ -72,7 +72,7 @@ void MainWindow::showPdf()
         QMessageBox::critical(nullptr, __func__, e);
         return;
     }
-    QString name = m_fileName.mid(m_fileName.indexOf('/') + 1);
+    QString name = m_fileName.mid(m_fileName.lastIndexOf('/') + 1);
     setWindowTitle(tr("%1 - Mini PDF Reader").arg(name));
     m_model->loadDocument(m_fileName);
     int pageCount = m_model->pageCount();
